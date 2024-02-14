@@ -12,4 +12,5 @@ final class _Api {
 
 final class _Hive {
   const _Hive();
+  String get favoriteBooks => 'favorite_books';
 }
