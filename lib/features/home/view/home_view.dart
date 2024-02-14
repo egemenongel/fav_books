@@ -1,5 +1,6 @@
 import 'package:fav_books/core/components/async_widget.dart';
 import 'package:fav_books/core/components/custom_app_bar.dart';
+import 'package:fav_books/core/components/empty_list_widget.dart';
 import 'package:fav_books/features/favorites/favorites_view.dart';
 import 'package:fav_books/features/home/view/book_tile.dart';
 import 'package:fav_books/features/home/viewmodel/book_list_viewmodel.dart';
@@ -31,35 +32,39 @@ class HomeView extends HookConsumerWidget {
           ),
           child: SizedBox(
             height: 50,
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 8,
-                  child: TextFormField(
-                    controller: searchField,
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (searchField.text.isEmpty) return;
-                      if (context.mounted && searchField.text.length > 500) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Aranan terim geçersiz.')));
-                        return;
-                      }
-                      await ref
-                          .read(bookListViewmodelProvider.notifier)
-                          .search(searchField.text);
-                    },
-                    child: const Text(
-                      'Search',
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 14,
+                    child: TextFormField(
+                      controller: searchField,
                     ),
                   ),
-                )
-              ],
+                  const SizedBox(width: 10),
+                  Expanded(
+                    flex: 6,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (searchField.text.isEmpty) return;
+                        if (context.mounted && searchField.text.length > 500) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Aranan terim geçersiz.')));
+                          return;
+                        }
+                        await ref
+                            .read(bookListViewmodelProvider.notifier)
+                            .search(searchField.text);
+                      },
+                      child: const Text(
+                        'Search',
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -77,36 +82,24 @@ class _Body extends StatelessWidget {
     final state = ref.watch(bookListViewmodelProvider);
     return AsyncWidget(
       asyncData: state,
-      builder: (volume) => volume == null
-          ? const _EmptyWidget()
-          : volume.items == null
-              ? const _EmptyWidget()
-              : ListView.builder(
-                  itemBuilder: (_, index) {
-                    final book = volume.items![index].volumeInfo;
-                    if (book == null) return const SizedBox.shrink();
-                    return BookTile(
-                      book: book,
-                      index: index,
-                    );
-                  },
-                  itemCount: volume.items!.length,
-                ),
-    );
-  }
-}
-
-class _EmptyWidget extends StatelessWidget {
-  const _EmptyWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Icon(
-        Icons.book,
-        size: 80,
-        color: Colors.blue,
-      ),
+      builder: (volume) {
+        if (volume == null || volume.items == null) {
+          return const EmptyListWidget();
+        }
+        return ListView.builder(
+          itemCount: volume.items!.length,
+          itemBuilder: (_, index) {
+            final book = volume.items![index].volumeInfo;
+            if (book == null) {
+              return const SizedBox.shrink();
+            }
+            return BookTile(
+              book: book,
+              index: index,
+            );
+          },
+        );
+      },
     );
   }
 }

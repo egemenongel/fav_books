@@ -1,4 +1,5 @@
 import 'package:fav_books/core/constants/constants.dart';
+import 'package:fav_books/core/theme/custom_theme.dart';
 import 'package:fav_books/features/home/view/home_view.dart';
 import 'package:fav_books/features/models/book_model.dart';
 import 'package:fav_books/features/models/image_links_model.dart';
@@ -26,10 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Favori Kitaplarım',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: CustomTheme.theme,
       home: const HomeView(),
     );
   }

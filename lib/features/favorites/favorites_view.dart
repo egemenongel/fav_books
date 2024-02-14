@@ -1,4 +1,5 @@
 import 'package:fav_books/core/components/custom_app_bar.dart';
+import 'package:fav_books/core/components/empty_list_widget.dart';
 import 'package:fav_books/features/home/service/local_book_list_service.dart';
 import 'package:fav_books/features/home/view/book_tile.dart';
 import 'package:flutter/material.dart';
@@ -17,15 +18,18 @@ class FavoritesView extends ConsumerWidget {
       body: ValueListenableBuilder(
         valueListenable:
             ref.read(localBookListServiceProvider).getBooks().listenable(),
-        builder: (_, books, __) => ListView.builder(
-          itemBuilder: (_, index) {
-            return BookTile(
-              book: books.values.toList()[index],
-              index: index,
-            );
-          },
-          itemCount: books.length,
-        ),
+        builder: (_, books, __) {
+          if (books.isEmpty) return const EmptyListWidget();
+          return ListView.builder(
+            itemBuilder: (_, index) {
+              return BookTile(
+                book: books.values.toList()[index],
+                index: index,
+              );
+            },
+            itemCount: books.length,
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fav_books/core/components/loading_widget.dart';
+import 'package:fav_books/core/extensions/context_extensions.dart';
 import 'package:fav_books/features/home/service/local_book_list_service.dart';
 import 'package:fav_books/features/models/book_model.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class BookTile extends ConsumerWidget {
               ),
               border: Border.all(
                 width: 2,
-                color: books.values.contains(book) ? Colors.blue : Colors.black,
+                color: books.values.contains(book) ? Colors.blue : Colors.white,
               ),
             ),
             child: Row(
@@ -52,6 +53,7 @@ class BookTile extends ConsumerWidget {
                           errorWidget: (_, __, ___) => const _NoImageWidget(),
                           placeholder: (context, url) => const LoadingWidget(),
                           fit: BoxFit.cover,
+                          height: 150,
                         ),
                 ),
                 Expanded(
@@ -64,11 +66,7 @@ class BookTile extends ConsumerWidget {
                         Text(
                           book.title ?? 'Bilinmiyor',
                           maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: context.textTheme.headlineSmall,
                         ),
                         const Divider(),
                         if (book.description != null)
@@ -76,12 +74,8 @@ class BookTile extends ConsumerWidget {
                             book.authors != null
                                 ? 'Description: ${book.description}'
                                 : '',
-                            style: const TextStyle(
-                              fontSize: 10,
-                            ),
-                            textAlign: TextAlign.left,
+                            style: context.textTheme.bodyLarge,
                             maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         const SizedBox(height: 10),
                         if (book.authors?.isNotEmpty ?? true)
@@ -89,20 +83,13 @@ class BookTile extends ConsumerWidget {
                             book.authors != null
                                 ? 'Authors: ${book.authors!.join(',')}'
                                 : '',
-                            style: const TextStyle(
-                              fontSize: 10,
-                            ),
-                            textAlign: TextAlign.left,
+                            style: context.textTheme.bodyLarge,
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        //TODO: DESCRIPTION
                         if (book.publisher != null)
                           Text(
                             'Publisher: ${book.publisher}',
-                            style: const TextStyle(
-                              fontSize: 10,
-                            ),
+                            style: context.textTheme.bodyLarge,
                             textAlign: TextAlign.left,
                           ),
                         const Spacer(),
@@ -115,10 +102,8 @@ class BookTile extends ConsumerWidget {
                                   book.publishedDate != null
                                       ? 'Published at: ${book.publishedDate}'
                                       : '',
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                  textAlign: TextAlign.left,
+                                  style: context.textTheme.bodySmall,
+                                  maxLines: 1,
                                 ),
                               ),
                               const Spacer(),
@@ -130,10 +115,8 @@ class BookTile extends ConsumerWidget {
                                   book.pageCount != null
                                       ? 'Pages: ${book.pageCount}'
                                       : '',
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                  textAlign: TextAlign.left,
+                                  style: context.textTheme.bodySmall,
+                                  maxLines: 1,
                                 ),
                               ),
                             ]
@@ -153,9 +136,7 @@ class BookTile extends ConsumerWidget {
 }
 
 class _NoImageWidget extends StatelessWidget {
-  const _NoImageWidget({
-    super.key,
-  });
+  const _NoImageWidget();
 
   @override
   Widget build(BuildContext context) {
