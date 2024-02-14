@@ -18,5 +18,5 @@ class BookListViewmodel extends AutoDisposeAsyncNotifier<VolumeModel?> {
 }
 
 final bookListViewmodelProvider =
-    AsyncNotifierProvider.autoDispose<BookListViewmodel, VolumeModel>(
+    AsyncNotifierProvider.autoDispose<BookListViewmodel, VolumeModel?>(
         BookListViewmodel.new);
