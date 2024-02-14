@@ -85,7 +85,10 @@ class _Body extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final book = volume.items![index].volumeInfo;
                     if (book == null) return const SizedBox.shrink();
-                    return BookTile(book: book);
+                    return BookTile(
+                      book: book,
+                      index: index,
+                    );
                   },
                   itemCount: volume.items!.length,
                 ),
