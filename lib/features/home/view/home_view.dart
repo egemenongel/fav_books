@@ -1,4 +1,6 @@
 import 'package:fav_books/core/components/async_widget.dart';
+import 'package:fav_books/core/components/custom_app_bar.dart';
+import 'package:fav_books/features/favorites/favorites_view.dart';
 import 'package:fav_books/features/home/view/book_tile.dart';
 import 'package:fav_books/features/home/viewmodel/book_list_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +14,13 @@ class HomeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchField = useTextEditingController();
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        title: const Text('Favori Kitaplarım'),
-        centerTitle: false,
+      appBar: CustomAppBar(
+        title: 'Favori Kitaplarım',
         actions: [
           IconButton(
             onPressed: () {
-              //TODO: Navigate to favorites screen
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const FavoritesView()));
             },
             icon: const Icon(Icons.favorite),
           )
