@@ -6,6 +6,8 @@ final class C {
 
 final class _Api {
   const _Api();
+  String get baseUrl => 'https://www.googleapis.com/books/v1/';
+  String get volumes => '/volumes';
 }
 
 final class _Hive {
