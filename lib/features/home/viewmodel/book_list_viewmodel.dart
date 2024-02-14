@@ -16,3 +16,7 @@ class BookListViewmodel extends AutoDisposeAsyncNotifier<VolumeModel?> {
     state = await AsyncValue.guard(() => service.search(query));
   }
 }
+
+final bookListViewmodelProvider =
+    AsyncNotifierProvider.autoDispose<BookListViewmodel, VolumeModel>(
+        BookListViewmodel.new);
